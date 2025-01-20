@@ -24,9 +24,6 @@ public class RedemptionModel
     [StringLength(100)] 
     public string Note { get; set; } = string.Empty;
     
-    // Seller reference (foreign key)
-    public int SellerOib { get; set; }
-    
     public required SellerModel Seller { get; set; }
     
     [DataType(DataType.Date)] 

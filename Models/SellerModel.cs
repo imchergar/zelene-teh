@@ -6,9 +6,9 @@ public class SellerModel
 {
     public int Id { get; set; }
     
-    [Required] 
-    [MaxLength(11)] 
-    public int Oib { get; set; }
+    [Required]
+    [RegularExpression(@"^\d{11}$", ErrorMessage = "Oib must be exactly 11 numeric digits.")]
+    public string Oib { get; set; }
     
     [Required]
     [StringLength(100)] 

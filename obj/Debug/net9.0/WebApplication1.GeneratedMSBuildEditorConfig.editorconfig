@@ -36,6 +36,54 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9Qcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[/home/imchergar/RiderProjects/WebApplication1/WebApplication1/Views/ItemEntry/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSXRlbUVudHJ5L0NyZWF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/imchergar/RiderProjects/WebApplication1/WebApplication1/Views/ItemEntry/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSXRlbUVudHJ5L0RlbGV0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/imchergar/RiderProjects/WebApplication1/WebApplication1/Views/ItemEntry/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSXRlbUVudHJ5L0VkaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/imchergar/RiderProjects/WebApplication1/WebApplication1/Views/ItemEntry/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSXRlbUVudHJ5L0luZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/imchergar/RiderProjects/WebApplication1/WebApplication1/Views/RedemptionEntry/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUmVkZW1wdGlvbkVudHJ5L0NyZWF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/imchergar/RiderProjects/WebApplication1/WebApplication1/Views/RedemptionEntry/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUmVkZW1wdGlvbkVudHJ5L0RlbGV0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/imchergar/RiderProjects/WebApplication1/WebApplication1/Views/RedemptionEntry/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUmVkZW1wdGlvbkVudHJ5L0VkaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/imchergar/RiderProjects/WebApplication1/WebApplication1/Views/RedemptionEntry/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUmVkZW1wdGlvbkVudHJ5L0luZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/imchergar/RiderProjects/WebApplication1/WebApplication1/Views/SellerEntry/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2VsbGVyRW50cnkvQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/imchergar/RiderProjects/WebApplication1/WebApplication1/Views/SellerEntry/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2VsbGVyRW50cnkvRGVsZXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/imchergar/RiderProjects/WebApplication1/WebApplication1/Views/SellerEntry/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2VsbGVyRW50cnkvRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/imchergar/RiderProjects/WebApplication1/WebApplication1/Views/SellerEntry/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2VsbGVyRW50cnkvSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [/home/imchergar/RiderProjects/WebApplication1/WebApplication1/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL0Vycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 

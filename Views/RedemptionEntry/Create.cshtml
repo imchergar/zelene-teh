@@ -1,0 +1,46 @@
+@model RedemptionModel
+
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class ="card">
+                <div class="card-header bg-primary text-white">
+                    <h2>Kreiranje otkupnog bloka</h2>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Create" method="post" >
+                     
+                        <div class="form-group mb-3">
+                            <label asp-for="IssueDate" class="form-label">Datum</label>
+                            <input asp-for="IssueDate" row="5" class="form-control" placeholder="Odaberite datum " />
+                        </div>
+                        <div class="form-group mb-3">
+                            <label asp-for="Seller" class="form-label">Prodavatelj</label>
+                            <input asp-for="Seller" class="form-control" placeholder="Odaberite prodavatelja" />
+                        </div>
+                        <div class="form-group mb-3">
+                            <label asp-for="Amount" class="form-label">Iznos</label>
+                            <input asp-for="Amount" class="form-control" placeholder="Upišite iznos" />
+                        </div>
+                        <div class="form-group mb-3">
+                            <label asp-for="State" class="form-label">Status</label>
+                            <select asp-for="State" asp-items="ViewBag.StateOptions" class="form-control">
+                                <option value="">Odaberite status</option>
+                            </select>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label asp-for="Note" class="form-label">Napomena</label>
+                            <input asp-for="Note" class="form-control" placeholder="Upišite napomenu" />
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <button type="submit" class="btn btn-primary">Create</button>
+                            <a asp-controller="RedemptionEntry" asp-action="Index" class="btn btn-secondary">Cancel</a>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
