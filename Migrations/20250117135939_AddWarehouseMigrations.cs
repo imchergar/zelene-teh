@@ -55,7 +55,6 @@ namespace WebApplication1.Migrations
                     Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     State = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Note = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    SellerOib = table.Column<int>(type: "int", nullable: false),
                     SellerId = table.Column<int>(type: "int", nullable: false),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: false)

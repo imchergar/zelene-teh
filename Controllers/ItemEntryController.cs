@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using WebApplication1.Data;
 using WebApplication1.Models;
+using X.PagedList.Extensions;
 
 namespace WebApplication1.Controllers;
 
@@ -13,10 +14,13 @@ public class ItemEntryController : Controller
         _db = db;
     }
 
-    public IActionResult Index()
-    {   
-        List<ItemModel> objItemEntryList = _db.ItemModels.ToList();
-
+    public IActionResult Index(int? page)
+    {
+        int pageNumber = page ?? 1;
+        int pageSize = 5;
+        
+        var objItemEntryList = _db.ItemModels.ToList().ToPagedList(pageNumber, pageSize);
+        
         return View(objItemEntryList);
     }
     

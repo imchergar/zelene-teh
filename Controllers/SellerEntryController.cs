@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using WebApplication1.Models;
 using WebApplication1.Data;
+using X.PagedList.Extensions;
 
 namespace WebApplication1.Controllers;
 
@@ -12,13 +13,18 @@ public class SellerEntryController : Controller
     {
         _db = db;
     }
-
-    public IActionResult Index()
-    {   
-        List<SellerModel> objSellerEntryList = _db.SellerModels.ToList();
-
+    
+    
+    public IActionResult Index(int? page)
+    {
+        int pageNumber = page ?? 1;
+        int pageSize = 5;
+        
+        var objSellerEntryList = _db.SellerModels.ToList().ToPagedList(pageNumber, pageSize);
+        
         return View(objSellerEntryList);
     }
+    
     public IActionResult Create()
     {
         return View();

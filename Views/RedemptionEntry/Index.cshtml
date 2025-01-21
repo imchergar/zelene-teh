@@ -1,4 +1,6 @@
-@model List<RedemptionModel>
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using X.PagedList.Mvc.Core
+@model X.PagedList.IPagedList<RedemptionModel>
 
 
 <div class="container">
@@ -42,7 +44,7 @@
             <tr>
                 <td>@entry.InternalNumber</td>
                 <td>@entry.IssueDate</td>
-                <td>@entry.Seller</td>
+                <td>@entry.Seller?.Oib</td>
                 <td>@entry.Amount</td>
                 <td>@entry.State</td>
                 <td>@entry.Note</td>
@@ -67,6 +69,11 @@
         }
         </tbody>
     </table>
-
-
+</div>
+<div>
+    @Html.PagedListPager(
+        Model,
+        page => Url.Action("Index", new { page = page }),
+        new PagedListRenderOptions { DisplayEllipsesWhenNotShowingAllPageNumbers = true }
+    )
 </div>

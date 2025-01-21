@@ -17,7 +17,9 @@
                         </div>
                         <div class="form-group mb-3">
                             <label asp-for="Seller" class="form-label">Prodavatelj</label>
-                            <input asp-for="Seller" class="form-control" placeholder="Odaberite prodavatelja" />
+                            <select asp-for="Seller" asp-items="ViewBag.SellerOptions" class="form-control">
+                                <option value="">Odaberite prodavatelja</option>
+                            </select>
                         </div>
                         <div class="form-group mb-3">
                             <label asp-for="Amount" class="form-label">Iznos</label>

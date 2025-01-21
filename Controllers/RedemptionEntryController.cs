@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using WebApplication1.Data;
 using WebApplication1.Models;
+using X.PagedList.Extensions;
 
 namespace WebApplication1.Controllers;
 
@@ -13,21 +15,23 @@ public class RedemptionEntryController : Controller
     {
         _db = db;
     }
-
-    public IActionResult Index()
-    {   
-        List<RedemptionModel> objRedemptionModelList = _db.RedemptionModels.ToList();
-
+    
+    public IActionResult Index(int? page)
+    {
+        int pageNumber = page ?? 1;
+        int pageSize = 5;
+        
+        var objRedemptionModelList = _db.RedemptionModels
+            .Include(r => r.Seller) // Ensure the Seller navigation property is loaded
+            .ToPagedList(pageNumber, pageSize);
+        
         return View(objRedemptionModelList);
     }
+    
     public IActionResult Create()
     {
-        ViewBag.StateOptions = new List<SelectListItem>
-        {
-            new SelectListItem { Text = "Nije isplaćeno", Value = "Nije isplaćeno" },
-            new SelectListItem { Text = "Pripremljen", Value = "Pripremljen" },
-            new SelectListItem { Text = "Isplaćeno", Value = "Isplaćeno" }
-        };
+        RedemptionStatusList();
+        GetSellers();
 
         return View();
     }
@@ -54,6 +58,9 @@ public class RedemptionEntryController : Controller
         {
             return NotFound();
         }
+
+        RedemptionStatusList();
+        GetSellers();
         
         return View(redemptionModel);
     }
@@ -92,4 +99,26 @@ public class RedemptionEntryController : Controller
         return RedirectToAction("Index");
     }
     
+    private void GetSellers()
+    {
+        var sellers = _db.SellerModels
+            .Select(s => new SelectListItem
+            {
+                Value = s.Id.ToString(),
+                Text = s.Oib.ToString()
+            })
+            .ToList();
+
+        ViewBag.SellerOptions = sellers;
+    }
+
+    private void RedemptionStatusList()
+    {
+        ViewBag.StateOptions = new List<SelectListItem>
+        {
+            new SelectListItem { Text = "Nije isplaćeno", Value = "Nije isplaćeno" },
+            new SelectListItem { Text = "Pripremljen", Value = "Pripremljen" },
+            new SelectListItem { Text = "Isplaćeno", Value = "Isplaćeno" }
+        };
+    }
 }

@@ -15,7 +15,6 @@ This project is a simple management system for handling "Otkupni Blokovi" using 
 - Features:
     - **List View** of "otkupni blokovi" (search by date, pagination).
     - "Otkupni Blok" form with full CRUD functionality.
-    - Modal for adding "stavke" to "otkupni blok."
 
 ### 3. Models
 

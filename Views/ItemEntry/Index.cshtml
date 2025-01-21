@@ -1,5 +1,5 @@
-@model List<ItemModel>
-
+@model X.PagedList.IPagedList<ItemModel>
+@using X.PagedList.Mvc.Core
 
 <div class="container">
     <div class="row pt-4">
@@ -64,6 +64,13 @@
         }
         </tbody>
     </table>
+    
+</div>
 
-
+<div>
+    @Html.PagedListPager(
+        Model,
+        page => Url.Action("Index", new { page = page }),
+        new PagedListRenderOptions { DisplayEllipsesWhenNotShowingAllPageNumbers = true }
+    )
 </div>

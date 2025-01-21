@@ -31,4 +31,7 @@ public class RedemptionModel
     
     [DataType(DataType.Date)]
     public DateTime UpdateDate { get; set; } = DateTime.Now;
+    
+    public required CompanyModel Company { get; set; }
+
 }

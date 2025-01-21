@@ -12,8 +12,8 @@ using WebApplication1.Data;
 namespace WebApplication1.Migrations
 {
     [DbContext(typeof(WarehouseDbContext))]
-    [Migration("20250118162603_AddMigration")]
-    partial class AddMigration
+    [Migration("20250121141426_Companymigration")]
+    partial class Companymigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,60 @@ namespace WebApplication1.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("WebApplication1.Models.CompanyModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CompanyName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("RedemptionId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RedemptionId");
+
+                    b.ToTable("CompanyModels");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CompanyName = "Zelene tehnologije",
+                            Email = "zelene.tehnologije@gmail.com",
+                            Password = "Zelene12."
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CompanyName = "Plave tehnologije",
+                            Email = "plave.tehnologije@gmail.com",
+                            Password = "Plave12."
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CompanyName = "Cistoca",
+                            Email = "cistoca@gmail.com",
+                            Password = "Cistoca.1"
+                        });
+                });
 
             modelBuilder.Entity("WebApplication1.Models.ItemModel", b =>
                 {
@@ -128,6 +182,15 @@ namespace WebApplication1.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("SellerModels");
+                });
+
+            modelBuilder.Entity("WebApplication1.Models.CompanyModel", b =>
+                {
+                    b.HasOne("WebApplication1.Models.RedemptionModel", "Redemption")
+                        .WithMany()
+                        .HasForeignKey("RedemptionId");
+
+                    b.Navigation("Redemption");
                 });
 
             modelBuilder.Entity("WebApplication1.Models.RedemptionModel", b =>
