@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -21,10 +22,15 @@ public class RedemptionEntryController : Controller
         int pageNumber = page ?? 1;
         int pageSize = 5;
         
-        var objRedemptionModelList = _db.RedemptionModels
-            .Include(r => r.Seller) // Ensure the Seller navigation property is loaded
-            .ToPagedList(pageNumber, pageSize);
+        var selectedCompanyId = GetCompanyFromSession();
         
+        
+        var objRedemptionModelList = _db.RedemptionModels
+            .Include(r => r.Seller) 
+            .Include(r => r.Company) 
+            .Where(r => r.Company.Id == selectedCompanyId) 
+            .ToPagedList(pageNumber, pageSize);
+
         return View(objRedemptionModelList);
     }
     
@@ -32,19 +38,23 @@ public class RedemptionEntryController : Controller
     {
         RedemptionStatusList();
         GetSellers();
-
+        
         return View();
     }
     
     [HttpPost]
     public IActionResult Create(RedemptionModel obj)
     {
+        PopulateRedemptionWithCompany(obj);
+        PopulateRedemptionWithSeller(obj);
+
         obj.UpdateDate = DateTime.Now;
         _db.RedemptionModels.Add(obj);
         _db.SaveChanges();
         return RedirectToAction("Index");
     }
-    
+
+
     public IActionResult Edit(int? id)
     {
         if (id == null || id == 0)
@@ -68,6 +78,9 @@ public class RedemptionEntryController : Controller
     [HttpPost]
     public IActionResult Edit(RedemptionModel obj)
     {
+        PopulateRedemptionWithCompany(obj);
+        PopulateRedemptionWithSeller(obj);
+        
         obj.UpdateDate = DateTime.Now;
         _db.RedemptionModels.Update(obj);
         _db.SaveChanges();
@@ -120,5 +133,49 @@ public class RedemptionEntryController : Controller
             new SelectListItem { Text = "Pripremljen", Value = "Pripremljen" },
             new SelectListItem { Text = "Isplaćeno", Value = "Isplaćeno" }
         };
+    }
+    
+    
+    private void PopulateRedemptionWithCompany(RedemptionModel obj)
+    {
+        var selectedCompanyId = GetCompanyFromSession();
+
+        if (!selectedCompanyId.HasValue) return;
+        var companyDatabase = GetCompanyByCompanyId(selectedCompanyId);
+
+        if (companyDatabase != null)
+        {
+            obj.Company = companyDatabase;
+        }
+    }
+
+    private void PopulateRedemptionWithSeller(RedemptionModel obj)
+    {
+        if (obj.SellerIdentifier == 0) return;
+        var sellerDatabase = GetSellerBySellerId(obj);
+            
+        if (sellerDatabase != null)
+        {
+            obj.Seller = sellerDatabase;
+        }
+    }
+
+    private SellerModel? GetSellerBySellerId(RedemptionModel obj)
+    {
+        SellerModel? sellerDatabase = _db.SellerModels.Find(obj.SellerIdentifier);
+        return sellerDatabase;
+    }
+
+    private CompanyModel? GetCompanyByCompanyId([DisallowNull] int? selectedCompanyId)
+    {
+        int companyId = selectedCompanyId.Value;
+        CompanyModel? companyDatabase = _db.CompanyModels.Find(companyId);
+        return companyDatabase;
+    }
+
+    private int? GetCompanyFromSession()
+    {
+        int? selectedCompanyId = HttpContext.Session.GetInt32("SelectedCompanyId");
+        return selectedCompanyId;
     }
 }

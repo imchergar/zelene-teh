@@ -1,7 +1,4 @@
-﻿@model IEnumerable<CompanyModel>
-
-
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8"/>
@@ -27,9 +24,6 @@
                         <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-controller="SellerEntry" asp-action="Index">Prodavatelji</a>
                     </li>
                     <li class="nav-item">
@@ -38,21 +32,10 @@
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-controller="RedemptionEntry" asp-action="Index">Otkupni blokovi</a>
                     </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Companies
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            @foreach (var company in Model) // Assuming you have a model with a list of companies
-                            {
-                                <li>
-                                    <a class="dropdown-item" href="@Url.Action("SelectCompany", "Home", new { companyId = company.Id })">
-                                        @company.CompanyName
-                                    </a>
-                                </li>
-                            }
-                        </ul>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Login">Login Company</a>
                     </li>
+                   
                 </ul>
             </div>
         </div>

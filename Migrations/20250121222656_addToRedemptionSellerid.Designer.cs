@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApplication1.Data;
 
@@ -11,9 +12,11 @@ using WebApplication1.Data;
 namespace WebApplication1.Migrations
 {
     [DbContext(typeof(WarehouseDbContext))]
-    partial class WarehouseDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250121222656_addToRedemptionSellerid")]
+    partial class addToRedemptionSellerid
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -93,9 +96,6 @@ namespace WebApplication1.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<int>("RedemptionModelId")
-                        .HasColumnType("int");
-
                     b.Property<string>("UnitOfQuantity")
                         .IsRequired()
                         .HasMaxLength(20)
@@ -105,8 +105,6 @@ namespace WebApplication1.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("RedemptionModelId");
 
                     b.ToTable("ItemModels");
                 });
@@ -187,17 +185,6 @@ namespace WebApplication1.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("SellerModels");
-                });
-
-            modelBuilder.Entity("WebApplication1.Models.ItemModel", b =>
-                {
-                    b.HasOne("WebApplication1.Models.RedemptionModel", "Redemption")
-                        .WithMany()
-                        .HasForeignKey("RedemptionModelId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Redemption");
                 });
 
             modelBuilder.Entity("WebApplication1.Models.RedemptionModel", b =>

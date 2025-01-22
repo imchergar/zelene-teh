@@ -30,6 +30,7 @@
             <th>Broj bloka</th>
             <th>Datum</th>
             <th>Prodavatelj</th>
+            <th>Firma</th>
             <th>Iznos</th>
             <th>Status</th>
             <th>Napomena</th>
@@ -45,6 +46,7 @@
                 <td>@entry.InternalNumber</td>
                 <td>@entry.IssueDate</td>
                 <td>@entry.Seller?.Oib</td>
+                <td>@entry.Company?.CompanyName</td>
                 <td>@entry.Amount</td>
                 <td>@entry.State</td>
                 <td>@entry.Note</td>

@@ -1,0 +1,40 @@
+@{
+    var companies = ViewData["Companies"] as IEnumerable<CompanyModel>;
+}
+
+<li class="nav-item position-relative">
+    <a class="nav-link text-dark d-flex align-items-center" href="#" id="toggleCompanyList" role="button">
+        <i class="bi bi-building mr-2"></i> 
+        <span>Kliknite da bi odabrali komapaniju</span>
+        <i class="bi bi-caret-down-fill ms-2"></i> 
+    </a>
+    <div id="companyList" class="border rounded p-3 mt-2 bg-white shadow-sm d-none position-absolute">
+        <h6 class="mb-3">Select a Company</h6>
+        <ul class="list-group">
+            @if (companies != null)
+            {
+                foreach (var company in companies)
+                {
+                    <li class="list-group-item">
+                        <a class="text-decoration-none" href="@Url.Action("SelectCompany", "Home", new { companyId = company.Id })">
+                            @company.CompanyName
+                        </a>
+                    </li>
+                }
+            }
+            else
+            {
+                <li class="list-group-item text-muted">No companies available</li>
+            }
+        </ul>
+    </div>
+</li>
+
+<script>
+    document.getElementById('toggleCompanyList').addEventListener('click', function (e) {
+        e.preventDefault(); 
+        const companyList = document.getElementById('companyList');
+        companyList.classList.toggle('d-none'); 
+    });
+</script>
+

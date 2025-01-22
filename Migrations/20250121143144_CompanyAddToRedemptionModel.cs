@@ -11,15 +11,15 @@ namespace WebApplication1.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<int>(
-                name: "CompanyModelId",
+                name: "CompanyId",
                 table: "RedemptionModels",
                 type: "int",
                 nullable: true);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_RedemptionModels_CompanyModels_CompanyModelId",
+                name: "FK_RedemptionModels_CompanyModels_CompanyId",
                 table: "RedemptionModels",
-                column: "CompanyModelId",
+                column: "CompanyId",
                 principalTable: "CompanyModels",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.SetNull);
@@ -29,11 +29,11 @@ namespace WebApplication1.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_RedemptionModels_CompanyModels_CompanyModelId",
+                name: "FK_RedemptionModels_CompanyModels_CompanyId",
                 table: "RedemptionModels");
 
             migrationBuilder.DropColumn(
-                name: "CompanyModelId",
+                name: "CompanyId",
                 table: "RedemptionModels");
         
         }

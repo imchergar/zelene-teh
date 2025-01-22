@@ -19,15 +19,35 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
-        var objCompanyEntryList = _db.CompanyModels.ToList();
-        return View(objCompanyEntryList);
+        var selectedCompanyId = HttpContext.Session.GetInt32("SelectedCompanyId");
+
+        if (selectedCompanyId != null)
+        {
+           CompanyModel company = _db.CompanyModels.Find(selectedCompanyId);
+           if (company != null)
+           {
+               ViewData["Company"] = company.CompanyName;
+           }
+        }
+        return View();
+    }
+    
+    public IActionResult Login()
+    {
+        GetCompanies();
+
+        return View();
     }
 
     public IActionResult SelectCompany(int companyId)
     {
-        HttpContext.Session.SetInt32("SelectedCompanyId", companyId);
+        if (companyId != 0 )
+        {
+            HttpContext.Session.SetInt32("SelectedCompanyId", companyId);
+        }
 
         return RedirectToAction("Index");
+
     }
     
     public IActionResult Privacy()
@@ -40,4 +60,11 @@ public class HomeController : Controller
     {
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
+    
+    private void GetCompanies()
+    {
+        var companies =  _db.CompanyModels.ToList();
+        ViewData["Companies"] = companies;
+    }
+
 }

@@ -23,7 +23,8 @@ public class RedemptionModel
     
     [StringLength(100)] 
     public string Note { get; set; } = string.Empty;
-    
+
+    public int SellerIdentifier { get; set; } 
     public required SellerModel Seller { get; set; }
     
     [DataType(DataType.Date)] 
@@ -33,5 +34,5 @@ public class RedemptionModel
     public DateTime UpdateDate { get; set; } = DateTime.Now;
     
     public required CompanyModel Company { get; set; }
-
+    
 }
