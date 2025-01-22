@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApplication1.Data;
 
@@ -11,9 +12,11 @@ using WebApplication1.Data;
 namespace WebApplication1.Migrations
 {
     [DbContext(typeof(WarehouseDbContext))]
-    partial class WarehouseDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250122130227_AddRedemptionItemRelation")]
+    partial class AddRedemptionItemRelation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -109,7 +112,7 @@ namespace WebApplication1.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<int?>("RedemptionId")
+                    b.Property<int>("RedemptionId")
                         .HasColumnType("int");
 
                     b.Property<string>("UnitOfQuantity")
@@ -209,7 +212,9 @@ namespace WebApplication1.Migrations
                 {
                     b.HasOne("WebApplication1.Models.RedemptionModel", "RedemptionModel")
                         .WithMany("Items")
-                        .HasForeignKey("RedemptionId");
+                        .HasForeignKey("RedemptionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("RedemptionModel");
                 });

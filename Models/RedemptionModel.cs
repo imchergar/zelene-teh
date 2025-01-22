@@ -35,4 +35,6 @@ public class RedemptionModel
     
     public required CompanyModel Company { get; set; }
     
+    public ICollection<ItemModel> Items { get; set; } = new List<ItemModel>();
+
 }

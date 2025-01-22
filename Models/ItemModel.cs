@@ -23,4 +23,8 @@ public class ItemModel
 
     [DataType(DataType.Date)] public DateTime UpdateDate { get; set; } = DateTime.Now;
     
+    public int? RedemptionId { get; set; }
+    
+    [ForeignKey("RedemptionId")]
+    public RedemptionModel? RedemptionModel { get; set; }
 }

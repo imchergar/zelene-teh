@@ -32,9 +32,24 @@ public class ItemEntryController : Controller
     [HttpPost]
     public IActionResult Create(ItemModel obj)
     {
-        _db.ItemModels.Add(obj);
-        _db.SaveChanges();
-        return RedirectToAction("Index");
+        
+        var validationResult = ValidateItemModelObject(obj);
+        if (validationResult != null)
+        {
+            return validationResult;
+        }
+        
+        try
+        {
+            _db.ItemModels.Add(obj);
+            _db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+        catch (Exception ex)
+        {
+            ModelState.AddModelError("", "An error occurred while saving the item. Please try again.");
+            return View(obj); 
+        }
     }
 
     public IActionResult Edit(int? id)
@@ -57,9 +72,24 @@ public class ItemEntryController : Controller
     [HttpPost]
     public IActionResult Edit(ItemModel obj)
     {
-        _db.ItemModels.Update(obj);
-        _db.SaveChanges();
-        return RedirectToAction("Index");
+        var validationResult = ValidateItemModelObject(obj);
+        if (validationResult != null)
+        {
+            return validationResult;
+        }
+        
+        try
+        {
+            _db.ItemModels.Update(obj);
+            _db.SaveChanges();
+            return RedirectToAction("Index"); 
+        
+        }
+        catch (Exception ex)
+        {
+            ModelState.AddModelError("", "Provjerite sve podatke i probajte opet");
+            return View(obj); 
+        }
     }
     
     public IActionResult Delete(int? id)
@@ -85,5 +115,35 @@ public class ItemEntryController : Controller
         _db.ItemModels.Remove(obj);
         _db.SaveChanges();
         return RedirectToAction("Index");
+    }
+    
+    private IActionResult? ValidateItemModelObject(ItemModel obj)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(obj);
+        }
+
+        if (obj.Product.Length < 3)
+        {
+            ModelState.AddModelError("Product", "Naziv proizvoda mora biti veći od 3 karaktera.");
+        }
+
+        if (obj.Amount <= 0)
+        {
+            ModelState.AddModelError("Amount", "Cijena ne smije biti nula.");
+        }
+
+        if (string.IsNullOrWhiteSpace(obj.UnitOfQuantity))
+        {
+            ModelState.AddModelError("UnitOfQuantity", "Upišite jediničnu količinu.");
+        }
+
+        if (obj.PricePerPeace <= 0)
+        {
+            ModelState.AddModelError("PricePerPeace", "Upišite cijenu po jedinici količine.");
+        }
+
+        return ModelState.IsValid ? null : View(obj);
     }
 }

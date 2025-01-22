@@ -27,6 +27,7 @@ public class RedemptionEntryController : Controller
         var redemptionQuery = _db.RedemptionModels
             .Include(r => r.Seller) 
             .Include(r => r.Company)
+            .Include(r => r.Items)
             .Where(r => r.Company.Id == selectedCompanyId); 
         
         redemptionQuery = GetRedemptionByDate(issueDate, redemptionQuery);
@@ -40,54 +41,93 @@ public class RedemptionEntryController : Controller
     {
         RedemptionStatusList();
         GetSellers();
+        GetItems();
         
         return View();
     }
-    
+
+  
     [HttpPost]
-    public IActionResult Create(RedemptionModel obj)
+    public IActionResult Create(RedemptionModel obj, int? selectedItemId)
     {
+        PopulateItemsToRedemption(obj, selectedItemId);
         PopulateRedemptionWithCompany(obj);
         PopulateRedemptionWithSeller(obj);
 
         obj.InternalNumber = GenerateSequenceNumber();
-        obj.UpdateDate = DateTime.Now; 
-        _db.RedemptionModels.Add(obj);
-        _db.SaveChanges();
-        return RedirectToAction("Index");
+        obj.UpdateDate = DateTime.Now;
+        
+        var validationResult = ValidateRedemptionModelObject(obj);
+        if (validationResult != null)
+        {
+            return validationResult;
+        }
+        try
+        {
+            _db.RedemptionModels.Add(obj);
+            _db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+        catch (Exception e)
+        {
+                ModelState.AddModelError("", "Provjerite sve podatke i probajte opet");
+                return View(obj); 
+        }
+  
     }
-
 
     public IActionResult Edit(int? id)
     {
+        
         if (id == null || id == 0)
         {
             return NotFound();
         }
         
-        RedemptionModel? redemptionModel = _db.RedemptionModels.Find(id);
-
-        if (redemptionModel == null)
+        var redemption = _db.RedemptionModels
+            .Include(r => r.Items)
+            .Include(r => r.Seller)
+            .Include(r => r.Company)
+            .FirstOrDefault(r => r.Id == id);
+        
+        
+        if (redemption == null)
         {
             return NotFound();
         }
 
         RedemptionStatusList();
         GetSellers();
-        
-        return View(redemptionModel);
+        GetItems();
+
+        return View(redemption);
     }
     
     [HttpPost]
-    public IActionResult Edit(RedemptionModel obj)
+    public IActionResult Edit(RedemptionModel obj, int? selectedItemId)
     {
+        var validationResult = ValidateRedemptionModelObject(obj);
+        if (validationResult != null)
+        {
+            return validationResult;
+        }
+        
         PopulateRedemptionWithCompany(obj);
         PopulateRedemptionWithSeller(obj);
-        
+        PopulateItemsToRedemption(obj, selectedItemId);
+
         obj.UpdateDate = DateTime.Now;
-        _db.RedemptionModels.Update(obj);
-        _db.SaveChanges();
-        return RedirectToAction("Index");
+        try
+        {
+            _db.RedemptionModels.Add(obj);
+            _db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+        catch (Exception e)
+        {
+            ModelState.AddModelError("", "Provjerite sve podatke i probajte opet");
+            return View(obj); 
+        }
     }
     
     public IActionResult Delete(int? id)
@@ -219,4 +259,45 @@ public class RedemptionEntryController : Controller
 
         return redemptionQuery;
     }
+    
+    private void PopulateItemsToRedemption(RedemptionModel obj, int? selectedItemId)
+    {
+        if (selectedItemId.HasValue)
+        {
+            var selectedItem = _db.ItemModels.Find(selectedItemId);
+            if (selectedItem != null)
+            {
+                obj.Items.Add(selectedItem); 
+            }
+        }
+    }
+    
+    private void GetItems()
+    {
+        ViewBag.ItemOptions = _db.ItemModels 
+            .Select(i => new SelectListItem
+            {
+                Value = i.Id.ToString(),
+                Text = i.Product 
+            }).ToList();
+
+    } 
+    
+
+    private IActionResult? ValidateRedemptionModelObject(RedemptionModel obj)
+    {
+        
+        if (obj.Amount <= 0)
+        {
+            ModelState.AddModelError("Amount", "Iznos mora biti veci od nula.");
+        }
+
+        if (string.IsNullOrWhiteSpace(obj.State))
+        {
+            ModelState.AddModelError("State", "Odaberite status.");
+        }
+        
+        return ModelState.ErrorCount > 0 ? null : View(obj);
+    }
+
 }

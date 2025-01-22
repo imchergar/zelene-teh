@@ -33,6 +33,8 @@ Logiranje errora
 Hardkodirane vrjednosti staviti u constante negdje u neki shareani file
 Authentifikacija novih firmi
 Registracija novih firmi
+Kod editiranja opcija za unset stavki sa otkupnog bloka
+Setanje vise od jedne stavke na otkupni blok
 
 
 

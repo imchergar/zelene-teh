@@ -1,5 +1,7 @@
 @model RedemptionModel
-
+@{
+    var itemOptions = ViewBag.ItemOptions as IEnumerable<SelectListItem> ?? new List<SelectListItem>();
+}
 
 <div class="container mt-4">
     <div class="row">
@@ -7,6 +9,7 @@
             <div class ="card">
                 <div class="card-header bg-primary text-white">
                     <h2>Kreiranje otkupnog bloka</h2>
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 </div>
                 <div class="card-body">
                     <form asp-action="Create" method="post" >
@@ -20,16 +23,31 @@
                             <select asp-for="SellerIdentifier" asp-items="ViewBag.SellerOptions" class="form-control">
                                 <option value="">Odaberite prodavatelja</option>
                             </select>
+                            <span asp-validation-for="SellerIdentifier" class="text-danger"></span>
+
                         </div>
                         <div class="form-group mb-3">
                             <label asp-for="Amount" class="form-label">Iznos</label>
                             <input asp-for="Amount" class="form-control" placeholder="Upišite iznos" />
+                            <span asp-validation-for="Amount" class="text-danger"></span>
                         </div>
                         <div class="form-group mb-3">
                             <label asp-for="State" class="form-label">Status</label>
                             <select asp-for="State" asp-items="ViewBag.StateOptions" class="form-control">
                                 <option value="">Odaberite status</option>
                             </select>
+                            <span asp-validation-for="State" class="text-danger"></span>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="ItemId" class="form-label">Odaberite Stavku</label>
+                            <select id="ItemId" name="selectedItemId" class="form-control">
+                                <option value="">-- Select Stavku --</option>
+                                @foreach (var item in itemOptions)
+                                {
+                                    <option value="@item.Value">@item.Text</option>
+                                }
+                            </select>
+                            <span asp-validation-for="Items" class="text-danger"></span>
                         </div>
                         <div class="form-group mb-3">
                             <label asp-for="Note" class="form-label">Napomena</label>

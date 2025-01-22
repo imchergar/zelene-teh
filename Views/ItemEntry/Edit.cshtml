@@ -7,24 +7,30 @@
             <div class ="card">
                 <div class="card-header bg-primary text-white">
                     <h2>Ažurirajte stavke</h2>
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
                 </div>
                 <div class="card-body">
                     <form asp-action="Edit" method="post" >
                         <div class="form-group mb-3">
                             <label asp-for="Product" class="form-label">Stavka</label>
                             <input asp-for="Product" class="form-control" placeholder="Upišite stavku" />
+                            <span asp-validation-for="Product" class="text-danger"></span>
                         </div>
                         <div class="form-group mb-3">
                             <label asp-for="Amount" class="form-label">Količina</label>
                             <input asp-for="Amount" row="5" class="form-control" placeholder="Upišite količinu " />
+                            <span asp-validation-for="Amount" class="text-danger"></span>
                         </div>
                         <div class="form-group mb-3">
                             <label asp-for="PricePerPeace" class="form-label">Cijena po količini</label>
                             <input asp-for="PricePerPeace" class="form-control" placeholder="Upišite cijenu po količini" />
+                            <span asp-validation-for="PricePerPeace" class="text-danger"></span>
                         </div>
                         <div class="form-group mb-3">
                             <label asp-for="UnitOfQuantity" class="form-label">Jredinica količine</label>
                             <input asp-for="UnitOfQuantity" class="form-control" placeholder="Upišite jedinicu količine" />
+                            <span asp-validation-for="UnitOfQuantity" class="text-danger"></span>
                         </div>
                         <div class="d-flex justify-content-between">
                             <button type="submit" class="btn btn-primary">Update</button>
