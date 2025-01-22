@@ -29,16 +29,7 @@ public class RedemptionEntryController : Controller
             .Include(r => r.Company)
             .Where(r => r.Company.Id == selectedCompanyId); 
         
-        if (!string.IsNullOrEmpty(issueDate))
-        {
-            DateTime parsedDate = DateTime.Now;
-            if (DateTime.TryParse(issueDate, out DateTime date))
-            {
-                parsedDate = date;
-            }
-        
-            redemptionQuery = redemptionQuery.Where(r => r.IssueDate.Date == parsedDate.Date); 
-        }
+        redemptionQuery = GetRedemptionByDate(issueDate, redemptionQuery);
         
         var objRedemptionModelList = redemptionQuery.ToPagedList(pageNumber, pageSize);
         
@@ -59,7 +50,8 @@ public class RedemptionEntryController : Controller
         PopulateRedemptionWithCompany(obj);
         PopulateRedemptionWithSeller(obj);
 
-        obj.UpdateDate = DateTime.Now;
+        obj.InternalNumber = GenerateSequenceNumber();
+        obj.UpdateDate = DateTime.Now; 
         _db.RedemptionModels.Add(obj);
         _db.SaveChanges();
         return RedirectToAction("Index");
@@ -188,5 +180,43 @@ public class RedemptionEntryController : Controller
     {
         int? selectedCompanyId = HttpContext.Session.GetInt32("SelectedCompanyId");
         return selectedCompanyId;
+    }
+    
+    private int GenerateSequenceNumber()
+    {
+        var sequence = _db.InternalNumberSequences.FirstOrDefault();
+
+        if (sequence == null)
+        {
+            sequence = new InternalNumberSequenceModel()
+            {
+                CurrentValue = 1
+            };
+            _db.InternalNumberSequences.Add(sequence);
+            _db.SaveChanges();
+        }
+
+        sequence.CurrentValue++;
+
+        _db.SaveChanges();
+        
+        int year = DateTime.Now.Year;
+        return   int.Parse($"{DateTime.Now.Year}{sequence.CurrentValue:D2}");
+    }
+    
+    private static IQueryable<RedemptionModel> GetRedemptionByDate(string issueDate, IQueryable<RedemptionModel> redemptionQuery)
+    {
+        if (!string.IsNullOrEmpty(issueDate))
+        {
+            DateTime parsedDate = DateTime.Now;
+            if (DateTime.TryParse(issueDate, out DateTime date))
+            {
+                parsedDate = date;
+            }
+        
+            redemptionQuery = redemptionQuery.Where(r => r.IssueDate.Date == parsedDate.Date); 
+        }
+
+        return redemptionQuery;
     }
 }

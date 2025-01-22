@@ -13,8 +13,10 @@ public class WarehouseDbContext: DbContext
     public DbSet<ItemModel> ItemModels { get; set; }
     public DbSet<SellerModel> SellerModels { get; set; }
     public DbSet<RedemptionModel> RedemptionModels { get; set; }
-    
     public DbSet<CompanyModel> CompanyModels { get; set; }
+    
+    public DbSet<InternalNumberSequenceModel> InternalNumberSequences { get; set; }
+
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
