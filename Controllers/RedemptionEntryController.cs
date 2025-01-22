@@ -17,20 +17,31 @@ public class RedemptionEntryController : Controller
         _db = db;
     }
     
-    public IActionResult Index(int? page)
+    public IActionResult Index(int? page, string issueDate = "")
     {
         int pageNumber = page ?? 1;
         int pageSize = 5;
-        
-        var selectedCompanyId = GetCompanyFromSession();
-        
-        
-        var objRedemptionModelList = _db.RedemptionModels
-            .Include(r => r.Seller) 
-            .Include(r => r.Company) 
-            .Where(r => r.Company.Id == selectedCompanyId) 
-            .ToPagedList(pageNumber, pageSize);
 
+        var selectedCompanyId = GetCompanyFromSession();
+
+        var redemptionQuery = _db.RedemptionModels
+            .Include(r => r.Seller) 
+            .Include(r => r.Company)
+            .Where(r => r.Company.Id == selectedCompanyId); 
+        
+        if (!string.IsNullOrEmpty(issueDate))
+        {
+            DateTime parsedDate = DateTime.Now;
+            if (DateTime.TryParse(issueDate, out DateTime date))
+            {
+                parsedDate = date;
+            }
+        
+            redemptionQuery = redemptionQuery.Where(r => r.IssueDate.Date == parsedDate.Date); 
+        }
+        
+        var objRedemptionModelList = redemptionQuery.ToPagedList(pageNumber, pageSize);
+        
         return View(objRedemptionModelList);
     }
     

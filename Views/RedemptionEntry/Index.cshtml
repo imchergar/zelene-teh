@@ -1,3 +1,4 @@
+@using Azure.Core
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @using X.PagedList.Mvc.Core
 @model X.PagedList.IPagedList<RedemptionModel>
@@ -20,6 +21,20 @@
             <h2>Otkupni blokovi</h2>
         </div>
     </div>
+
+    <div class="row pt-3">
+        <div class="col-12">
+            <form method="get" asp-action="Index">
+                <div class="form-inline">
+                    <div class="form-group">
+                        <label for="issueDate" class="mr-2">Filtriraj po datumu:</label>
+                        <input type="date" id="issueDate" name="issueDate" class="form-control" value="" />
+                    </div>
+                    <button type="submit" class="btn btn-secondary ml-2">Search</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 
 
@@ -34,8 +49,6 @@
             <th>Iznos</th>
             <th>Status</th>
             <th>Napomena</th>
-            <th>Kreirano</th>
-            <th>Ažurirano</th>
             <th>Actions</th>
         </tr>
         </thead>
@@ -50,8 +63,6 @@
                 <td>@entry.Amount</td>
                 <td>@entry.State</td>
                 <td>@entry.Note</td>
-                <td>@entry.CreationDate</td>
-                <td>@entry.UpdateDate</td>
                 <td>
                     <a asp-controller="RedemptionEntry" asp-action="Edit" asp-route-id="@entry.Id" class="btn btn-primary btn-sm">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
