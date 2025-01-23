@@ -12,8 +12,8 @@ using WebApplication1.Data;
 namespace WebApplication1.Migrations
 {
     [DbContext(typeof(WarehouseDbContext))]
-    [Migration("20250122130227_AddRedemptionItemRelation")]
-    partial class AddRedemptionItemRelation
+    [Migration("20250122220525_ItemRedemptionTable")]
+    partial class ItemRedemptionTable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -112,9 +112,6 @@ namespace WebApplication1.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<int>("RedemptionId")
-                        .HasColumnType("int");
-
                     b.Property<string>("UnitOfQuantity")
                         .IsRequired()
                         .HasMaxLength(20)
@@ -125,9 +122,30 @@ namespace WebApplication1.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("RedemptionId");
-
                     b.ToTable("ItemModels");
+                });
+
+            modelBuilder.Entity("WebApplication1.Models.ItemRedemptionModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ItemModelId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RedemptionModelId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ItemModelId");
+
+                    b.HasIndex("RedemptionModelId");
+
+                    b.ToTable("ItemRedemptionModels");
                 });
 
             modelBuilder.Entity("WebApplication1.Models.RedemptionModel", b =>
@@ -208,13 +226,21 @@ namespace WebApplication1.Migrations
                     b.ToTable("SellerModels");
                 });
 
-            modelBuilder.Entity("WebApplication1.Models.ItemModel", b =>
+            modelBuilder.Entity("WebApplication1.Models.ItemRedemptionModel", b =>
                 {
-                    b.HasOne("WebApplication1.Models.RedemptionModel", "RedemptionModel")
-                        .WithMany("Items")
-                        .HasForeignKey("RedemptionId")
+                    b.HasOne("WebApplication1.Models.ItemModel", "ItemModel")
+                        .WithMany()
+                        .HasForeignKey("ItemModelId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("WebApplication1.Models.RedemptionModel", "RedemptionModel")
+                        .WithMany()
+                        .HasForeignKey("RedemptionModelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ItemModel");
 
                     b.Navigation("RedemptionModel");
                 });
@@ -236,11 +262,6 @@ namespace WebApplication1.Migrations
                     b.Navigation("Company");
 
                     b.Navigation("Seller");
-                });
-
-            modelBuilder.Entity("WebApplication1.Models.RedemptionModel", b =>
-                {
-                    b.Navigation("Items");
                 });
 #pragma warning restore 612, 618
         }

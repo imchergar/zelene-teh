@@ -73,16 +73,10 @@ public class SellerEntryController : Controller
     [HttpPost]
     public IActionResult Edit(SellerModel obj)
     {
-        var validationResult = ValidateSellerModelObject(obj);
-        if (validationResult != null)
-        {
-            return validationResult;
-        }
         
-        _db.SellerModels.Update(obj);
         try
         {
-            _db.SellerModels.Add(obj);
+            _db.SellerModels.Update(obj);
             _db.SaveChanges();
             return RedirectToAction("Index");
         }

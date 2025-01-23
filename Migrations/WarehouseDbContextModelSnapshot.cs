@@ -109,9 +109,6 @@ namespace WebApplication1.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<int?>("RedemptionId")
-                        .HasColumnType("int");
-
                     b.Property<string>("UnitOfQuantity")
                         .IsRequired()
                         .HasMaxLength(20)
@@ -122,9 +119,52 @@ namespace WebApplication1.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("RedemptionId");
-
                     b.ToTable("ItemModels");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Amount = 100.50m,
+                            CreationDate = new DateTime(2025, 1, 23, 9, 17, 2, 472, DateTimeKind.Local).AddTicks(5843),
+                            PricePerPeace = 2.0m,
+                            Product = "Kabel",
+                            UnitOfQuantity = "kg",
+                            UpdateDate = new DateTime(2025, 1, 23, 9, 17, 2, 472, DateTimeKind.Local).AddTicks(6488)
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Amount = 20.50m,
+                            CreationDate = new DateTime(2025, 1, 23, 9, 17, 2, 472, DateTimeKind.Local).AddTicks(7124),
+                            PricePerPeace = 2.0m,
+                            Product = "Gumirani kabel",
+                            UnitOfQuantity = "cm",
+                            UpdateDate = new DateTime(2025, 1, 23, 9, 17, 2, 472, DateTimeKind.Local).AddTicks(7126)
+                        });
+                });
+
+            modelBuilder.Entity("WebApplication1.Models.ItemRedemptionModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ItemModelId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RedemptionModelId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ItemModelId");
+
+                    b.HasIndex("RedemptionModelId");
+
+                    b.ToTable("ItemRedemptionModels");
                 });
 
             modelBuilder.Entity("WebApplication1.Models.RedemptionModel", b =>
@@ -203,13 +243,39 @@ namespace WebApplication1.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("SellerModels");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Ivan",
+                            Oib = "12345678901",
+                            Surname = "Jovica"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Jovica",
+                            Oib = "12345678902",
+                            Surname = "Ivica"
+                        });
                 });
 
-            modelBuilder.Entity("WebApplication1.Models.ItemModel", b =>
+            modelBuilder.Entity("WebApplication1.Models.ItemRedemptionModel", b =>
                 {
+                    b.HasOne("WebApplication1.Models.ItemModel", "ItemModel")
+                        .WithMany()
+                        .HasForeignKey("ItemModelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("WebApplication1.Models.RedemptionModel", "RedemptionModel")
-                        .WithMany("Items")
-                        .HasForeignKey("RedemptionId");
+                        .WithMany()
+                        .HasForeignKey("RedemptionModelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ItemModel");
 
                     b.Navigation("RedemptionModel");
                 });
@@ -231,11 +297,6 @@ namespace WebApplication1.Migrations
                     b.Navigation("Company");
 
                     b.Navigation("Seller");
-                });
-
-            modelBuilder.Entity("WebApplication1.Models.RedemptionModel", b =>
-                {
-                    b.Navigation("Items");
                 });
 #pragma warning restore 612, 618
         }

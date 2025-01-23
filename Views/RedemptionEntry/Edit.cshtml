@@ -25,7 +25,6 @@
                                 <option value="">Odaberite prodavatelja</option>
                             </select>
                             <span asp-validation-for="SellerIdentifier" class="text-danger"></span>
-
                         </div>
                         <div class="form-group mb-3">
                             <label asp-for="Amount" class="form-label">Iznos</label>
@@ -48,14 +47,13 @@
                                     <option value="@item.Value">@item.Text</option>
                                 }
                             </select>
-                            <span asp-validation-for="Items" class="text-danger"></span>
                         </div>
                         <div class="form-group mb-3">
                             <label asp-for="Note" class="form-label">Napomena</label>
                             <input asp-for="Note" class="form-control" placeholder="Upišite napomenu" />
                         </div>
                         <div class="d-flex justify-content-between">
-                            <button type="submit" class="btn btn-primary">Create</button>
+                            <button type="submit" class="btn btn-primary">Ažuriraj</button>
                             <a asp-controller="RedemptionEntry" asp-action="Index" class="btn btn-secondary">Cancel</a>
                         </div>
                     </form>

@@ -12,8 +12,8 @@ using WebApplication1.Data;
 namespace WebApplication1.Migrations
 {
     [DbContext(typeof(WarehouseDbContext))]
-    [Migration("20250122131735_AddRedemptionItemRelation2")]
-    partial class AddRedemptionItemRelation2
+    [Migration("20250122214218_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -112,7 +112,7 @@ namespace WebApplication1.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<int?>("RedemptionId")
+                    b.Property<int?>("RedemptionModelId")
                         .HasColumnType("int");
 
                     b.Property<string>("UnitOfQuantity")
@@ -125,7 +125,7 @@ namespace WebApplication1.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("RedemptionId");
+                    b.HasIndex("RedemptionModelId");
 
                     b.ToTable("ItemModels");
                 });
@@ -210,11 +210,9 @@ namespace WebApplication1.Migrations
 
             modelBuilder.Entity("WebApplication1.Models.ItemModel", b =>
                 {
-                    b.HasOne("WebApplication1.Models.RedemptionModel", "RedemptionModel")
+                    b.HasOne("WebApplication1.Models.RedemptionModel", null)
                         .WithMany("Items")
-                        .HasForeignKey("RedemptionId");
-
-                    b.Navigation("RedemptionModel");
+                        .HasForeignKey("RedemptionModelId");
                 });
 
             modelBuilder.Entity("WebApplication1.Models.RedemptionModel", b =>

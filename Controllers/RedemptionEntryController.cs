@@ -27,7 +27,6 @@ public class RedemptionEntryController : Controller
         var redemptionQuery = _db.RedemptionModels
             .Include(r => r.Seller) 
             .Include(r => r.Company)
-            .Include(r => r.Items)
             .Where(r => r.Company.Id == selectedCompanyId); 
         
         redemptionQuery = GetRedemptionByDate(issueDate, redemptionQuery);
@@ -50,7 +49,6 @@ public class RedemptionEntryController : Controller
     [HttpPost]
     public IActionResult Create(RedemptionModel obj, int? selectedItemId)
     {
-        PopulateItemsToRedemption(obj, selectedItemId);
         PopulateRedemptionWithCompany(obj);
         PopulateRedemptionWithSeller(obj);
 
@@ -66,6 +64,9 @@ public class RedemptionEntryController : Controller
         {
             _db.RedemptionModels.Add(obj);
             _db.SaveChanges();
+            
+            SaveItemRedemptionRelation(obj, selectedItemId);
+            
             return RedirectToAction("Index");
         }
         catch (Exception e)
@@ -76,6 +77,8 @@ public class RedemptionEntryController : Controller
   
     }
 
+   
+
     public IActionResult Edit(int? id)
     {
         
@@ -85,7 +88,6 @@ public class RedemptionEntryController : Controller
         }
         
         var redemption = _db.RedemptionModels
-            .Include(r => r.Items)
             .Include(r => r.Seller)
             .Include(r => r.Company)
             .FirstOrDefault(r => r.Id == id);
@@ -114,13 +116,15 @@ public class RedemptionEntryController : Controller
         
         PopulateRedemptionWithCompany(obj);
         PopulateRedemptionWithSeller(obj);
-        PopulateItemsToRedemption(obj, selectedItemId);
 
         obj.UpdateDate = DateTime.Now;
         try
         {
-            _db.RedemptionModels.Add(obj);
+            _db.RedemptionModels.Update(obj);
             _db.SaveChanges();
+            
+            SaveItemRedemptionRelation(obj, selectedItemId);
+            
             return RedirectToAction("Index");
         }
         catch (Exception e)
@@ -260,18 +264,6 @@ public class RedemptionEntryController : Controller
         return redemptionQuery;
     }
     
-    private void PopulateItemsToRedemption(RedemptionModel obj, int? selectedItemId)
-    {
-        if (selectedItemId.HasValue)
-        {
-            var selectedItem = _db.ItemModels.Find(selectedItemId);
-            if (selectedItem != null)
-            {
-                obj.Items.Add(selectedItem); 
-            }
-        }
-    }
-    
     private void GetItems()
     {
         ViewBag.ItemOptions = _db.ItemModels 
@@ -298,6 +290,21 @@ public class RedemptionEntryController : Controller
         }
         
         return ModelState.ErrorCount > 0 ? null : View(obj);
+    }
+    
+    private void SaveItemRedemptionRelation(RedemptionModel obj, int? selectedItemId)
+    {
+        if (selectedItemId.HasValue)
+        {
+            var selectedItem = _db.ItemModels.Find(selectedItemId);
+            ItemRedemptionModel itemRedemption = new ItemRedemptionModel()
+            {
+                ItemModelId = selectedItem.Id, 
+                RedemptionModelId = obj.Id 
+            };
+            _db.ItemRedemptionModels.Add(itemRedemption);
+            _db.SaveChanges();
+        }
     }
 
 }

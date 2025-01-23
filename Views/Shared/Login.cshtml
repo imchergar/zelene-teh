@@ -4,9 +4,9 @@
 
 <li class="nav-item position-relative">
     <a class="nav-link text-dark d-flex align-items-center" href="#" id="toggleCompanyList" role="button">
-        <i class="bi bi-building mr-2"></i> 
-        <span>Kliknite da bi odabrali firmu</span>
-        <i class="bi bi-caret-down-fill ms-2"></i> 
+        <i class="bi bi-building mr-2"></i>
+        <span>Click to select a company</span>
+        <i id="caretIcon" class="bi bi-caret-down-fill ms-2 transition-transform"></i>
     </a>
     <div id="companyList" class="border rounded p-3 mt-2 bg-white shadow-sm d-none position-absolute">
         <h6 class="mb-3">Select a Company</h6>
@@ -16,7 +16,7 @@
                 foreach (var company in companies)
                 {
                     <li class="list-group-item">
-                        <a class="text-decoration-none" href="@Url.Action("SelectCompany", "Home", new { companyId = company.Id })">
+                        <a class="text-decoration-none text-dark hover-underline" href="@Url.Action("SelectCompany", "Home", new { companyId = company.Id })">
                             @company.CompanyName
                         </a>
                     </li>
@@ -32,9 +32,39 @@
 
 <script>
     document.getElementById('toggleCompanyList').addEventListener('click', function (e) {
-        e.preventDefault(); 
+        e.preventDefault();
         const companyList = document.getElementById('companyList');
-        companyList.classList.toggle('d-none'); 
+        const caretIcon = document.getElementById('caretIcon');
+        companyList.classList.toggle('d-none');
+        caretIcon.classList.toggle('rotate-180'); // Rotate the caret
     });
 </script>
 
+<style>
+    /* Add smooth transition for caret rotation */
+    .transition-transform {
+        transition: transform 0.3s ease;
+    }
+
+    /* Rotate caret when expanded */
+    .rotate-180 {
+        transform: rotate(180deg);
+    }
+
+    /* Hover effect for company items */
+    .list-group-item:hover {
+        background-color: #f8f9fa;
+        cursor: pointer;
+    }
+
+    /* Add underline on hover for the company names */
+    .hover-underline:hover {
+        text-decoration: underline;
+    }
+
+    /* Slightly improve padding and button text style */
+    #toggleCompanyList span {
+        font-weight: 500;
+        font-size: 14px;
+    }
+</style>

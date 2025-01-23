@@ -9,7 +9,10 @@
 
 2. **Set Up the Database**:
     - Use SQL Server.
-
+   ```bash sql server
+      create database warehouse
+      go
+   ```
 3. **Run Migrations**:
    ```bash
    dotnet ef migrations add InitialCreate
@@ -34,6 +37,7 @@ Hardkodirane vrjednosti staviti u constante negdje u neki shareani file
 Authentifikacija novih firmi
 Registracija novih firmi
 Kod editiranja opcija za unset stavki sa otkupnog bloka
+Prikazivanje stavki na otkupnom bloku
 Setanje vise od jedne stavke na otkupni blok
 
 

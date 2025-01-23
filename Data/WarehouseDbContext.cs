@@ -14,8 +14,9 @@ public class WarehouseDbContext: DbContext
     public DbSet<SellerModel> SellerModels { get; set; }
     public DbSet<RedemptionModel> RedemptionModels { get; set; }
     public DbSet<CompanyModel> CompanyModels { get; set; }
-    
     public DbSet<InternalNumberSequenceModel> InternalNumberSequences { get; set; }
+    
+    public DbSet<ItemRedemptionModel> ItemRedemptionModels { get; set; }
 
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -41,8 +42,6 @@ public class WarehouseDbContext: DbContext
                 Email= "cistoca@gmail.com", 
                 Password = "Cistoca.1" 
             }
-
         );
-
     }
 }
